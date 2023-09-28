@@ -24,11 +24,11 @@ public class Boleto {
 
     /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vuelo")
-    private Vuelo vuelo;
+    private Vuelo vuelo;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_medio_pago")
-    private MedioPago medioPago;*/
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     public Boleto(){
 

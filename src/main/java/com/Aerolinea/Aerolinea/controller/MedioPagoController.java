@@ -62,7 +62,7 @@ public class MedioPagoController {
     }
 
     @PostMapping(value = "{idMedioPago}/boletos/{idBoleto}/remove")
-    public ResponseEntity<MedioPagoDto> removeBoletoToMedioPago(@PathVariable final Long idMedioPago,
+    public ResponseEntity<MedioPagoDto> removeBoletoFromMedioPago(@PathVariable final Long idMedioPago,
                                                              @PathVariable final Long idBoleto){
         MedioPago medioPago = medioPagoService.removeBoletoFromMedioPago(idMedioPago, idBoleto);
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);

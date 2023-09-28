@@ -12,6 +12,7 @@ public class BoletoDto {
     private String serialNumber;
     private double pago;
     private PlainMedioPagoDto plainMedioPagoDto;
+    private PlainUsuarioDto plainUsuarioDto;
 
     public static BoletoDto from(Boleto boleto){
         BoletoDto boletoDto = new BoletoDto();
@@ -21,6 +22,10 @@ public class BoletoDto {
 
         if(Objects.nonNull(boleto.getMedioPago())){
             boletoDto.setPlainMedioPagoDto(PlainMedioPagoDto.from(boleto.getMedioPago()));
+        }
+
+        if(Objects.nonNull(boleto.getUsuario())){
+            boletoDto.setPlainUsuarioDto(PlainUsuarioDto.from(boleto.getUsuario()));
         }
         return boletoDto;
     }

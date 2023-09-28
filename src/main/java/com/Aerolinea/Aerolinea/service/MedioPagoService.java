@@ -2,7 +2,7 @@ package com.Aerolinea.Aerolinea.service;
 
 import com.Aerolinea.Aerolinea.model.Boleto;
 import com.Aerolinea.Aerolinea.model.MedioPago;
-import com.Aerolinea.Aerolinea.model.exception.BoletoIsAlreadyAssignedException;
+import com.Aerolinea.Aerolinea.model.exception.BoletoIsAlreadyAssignedMedioPagoException;
 import com.Aerolinea.Aerolinea.model.exception.MedioPagoNotFoundException;
 import com.Aerolinea.Aerolinea.repository.MedioPagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class MedioPagoService {
         MedioPago medioPago = getMedioPago(idMedioPago);
         Boleto boleto = boletoService.getBoleto(idBoleto);
         if(Objects.nonNull(boleto.getMedioPago())){
-            throw new BoletoIsAlreadyAssignedException(idBoleto, boleto.getMedioPago().getId());
+            throw new BoletoIsAlreadyAssignedMedioPagoException(idBoleto, boleto.getMedioPago().getId());
         }
         medioPago.addBoleto(boleto);
         boleto.setMedioPago(medioPago);

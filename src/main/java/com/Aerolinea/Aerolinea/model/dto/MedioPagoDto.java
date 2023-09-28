@@ -18,7 +18,7 @@ public class MedioPagoDto {
 
     public static MedioPagoDto from(MedioPago medioPago){
         MedioPagoDto medioPagoDto = new MedioPagoDto();
-        medioPagoDto.setId(medioPagoDto.getId());
+        medioPagoDto.setId(medioPago.getId());
         medioPagoDto.setPse(medioPago.isPse());
         medioPagoDto.setTarjetaCredito(medioPago.isTarjetaCredito());
         medioPagoDto.setTarjetaDebito(medioPago.isTarjetaDebito());
