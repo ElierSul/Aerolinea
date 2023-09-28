@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Traslado")
+@Table(name = "traslado")
 public class Traslado {
 
     @Id
@@ -29,10 +29,12 @@ public class Traslado {
     @Column(name = "aeropuerto")
     private String aeropuerto;
 
-    @Column(name = "fechaOrigen")
+    @Column(name = "fecha_origen", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date fechaOrigen;
 
-    @Column(name = "fechaDestino")
+    @Column(name = "fecha_destino", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date fechaDestino;
 
     @Column(name = "solo_ida")
@@ -42,7 +44,7 @@ public class Traslado {
     private boolean idaVuelta;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "escala_id")
+    //@JoinColumn(name = "escala_id")
     private List<Escala> escalas = new ArrayList<>();
 
     public void addEscala(Escala escala){

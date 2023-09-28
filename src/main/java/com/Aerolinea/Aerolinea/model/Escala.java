@@ -6,18 +6,18 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Escala")
+@Table(name = "escala")
 public class Escala {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long numTrayectos;
-
+    @Column(name = "serial_number")
     private String serialNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_traslado")
     private Traslado traslado;
 
     public Escala() {

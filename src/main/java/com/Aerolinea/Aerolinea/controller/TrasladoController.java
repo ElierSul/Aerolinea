@@ -1,7 +1,6 @@
 package com.Aerolinea.Aerolinea.controller;
 
 import com.Aerolinea.Aerolinea.model.Traslado;
-import com.Aerolinea.Aerolinea.model.dto.EscalaDto;
 import com.Aerolinea.Aerolinea.model.dto.TrasladoDto;
 import com.Aerolinea.Aerolinea.service.TrasladoService;
 import org.springframework.beans.factory.annotation.Autowired;
