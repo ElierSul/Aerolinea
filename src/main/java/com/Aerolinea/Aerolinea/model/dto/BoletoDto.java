@@ -9,23 +9,26 @@ import java.util.Objects;
 public class BoletoDto {
 
     private Long id;
-    private String serialNumber;
-    private double pago;
-    private PlainMedioPagoDto plainMedioPagoDto;
-    private PlainUsuarioDto plainUsuarioDto;
+    private int lugar;
+    private PlainMedioPagoDto MedioPago;
+    private PlainUsuarioDto Usuario;
+    private PlainVueloDto vuelos;
 
     public static BoletoDto from(Boleto boleto){
         BoletoDto boletoDto = new BoletoDto();
         boletoDto.setId(boleto.getId());
-        boletoDto.setSerialNumber(boleto.getSerialNumber());
-        boletoDto.setPago(boleto.getPago());
+        boletoDto.setLugar(boleto.getLugar());
 
         if(Objects.nonNull(boleto.getMedioPago())){
-            boletoDto.setPlainMedioPagoDto(PlainMedioPagoDto.from(boleto.getMedioPago()));
+            boletoDto.setMedioPago(PlainMedioPagoDto.from(boleto.getMedioPago()));
         }
 
         if(Objects.nonNull(boleto.getUsuario())){
-            boletoDto.setPlainUsuarioDto(PlainUsuarioDto.from(boleto.getUsuario()));
+            boletoDto.setUsuario(PlainUsuarioDto.from(boleto.getUsuario()));
+        }
+
+        if(Objects.nonNull(boleto.getVuelo())){
+            boletoDto.setVuelos(PlainVueloDto.from(boleto.getVuelo()));
         }
         return boletoDto;
     }

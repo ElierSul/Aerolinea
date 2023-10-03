@@ -21,6 +21,7 @@ public class EscalaService {
         this.escalaRepository = escalaRepository;
     }
 
+
     public Escala addEscala(Escala escala){
         return escalaRepository.save(escala);
     }
@@ -32,7 +33,7 @@ public class EscalaService {
     }
 
     public Escala getEscala(Long id){
-        return escalaRepository.findById(id).orElseThrow(() ->
+        return escalaRepository.findById(id).orElseThrow(()->
                 new EscalaNotFoundException(id));
     }
 
@@ -41,11 +42,18 @@ public class EscalaService {
         escalaRepository.delete(escala);
         return escala;
     }
-
     @Transactional
     public Escala editEscala(Long id, Escala escala){
         Escala escalaToEdit = getEscala(id);
-        escalaToEdit.setSerialNumber(escala.getSerialNumber());
+        escalaToEdit.setPaisOrigen(escala.getPaisOrigen());
+        escalaToEdit.setPaisDestino(escala.getPaisDestino());
+        escalaToEdit.setCiudadOrigen(escala.getCiudadOrigen());
+        escalaToEdit.setCiudadDestino(escala.getCiudadDestino());
+        escalaToEdit.setAeropuertoOrigen(escala.getAeropuertoOrigen());
+        escalaToEdit.setAeropuertoDestino(escala.getAeropuertoDestino());
+        escalaToEdit.setFechaOrigen(escala.getFechaOrigen());
+        escalaToEdit.setFechaDestino(escala.getFechaDestino());
         return escalaToEdit;
     }
+
 }

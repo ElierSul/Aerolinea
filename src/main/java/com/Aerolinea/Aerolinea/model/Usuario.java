@@ -26,9 +26,11 @@ public class Usuario {
 
     private String email;
 
+    private String contrasena;
+
     private boolean equipaje;
 
-    private String contrasena;
+
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Boleto> boletos = new ArrayList<>();
@@ -49,6 +51,7 @@ public class Usuario {
         usuario.setCelular(usuarioDto.getCelular());
         usuario.setEmail(usuarioDto.getEmail());
         usuario.setEquipaje(usuario.isEquipaje());
+        usuario.setContrasena(usuarioDto.getContrasena());
         return usuario;
     }
 }

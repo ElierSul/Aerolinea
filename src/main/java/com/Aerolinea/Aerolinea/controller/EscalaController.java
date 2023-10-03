@@ -31,8 +31,8 @@ public class EscalaController {
     @GetMapping
     public ResponseEntity<List<EscalaDto>> getEscalas(){
         List<Escala> escalas = escalaService.getEscalas();
-        List<EscalaDto> escalasDto = escalas.stream().map(EscalaDto::from).collect(Collectors.toList());
-        return new ResponseEntity<>(escalasDto, HttpStatus.OK);
+        List<EscalaDto> escalaDtos = escalas.stream().map(EscalaDto::from).collect(Collectors.toList());
+        return new ResponseEntity<>(escalaDtos, HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}")
@@ -49,9 +49,9 @@ public class EscalaController {
 
     @PutMapping(value = "{id}")
     public ResponseEntity<EscalaDto> editEscala(@PathVariable final Long id,
-                                                @RequestBody final EscalaDto escalaDto){
-        Escala editedEscala = escalaService.editEscala(id, Escala.from(escalaDto));
-        return new ResponseEntity<>(EscalaDto.from(editedEscala), HttpStatus.OK);
+                                                  @RequestBody final EscalaDto escalaDto){
+        Escala escala = escalaService.editEscala(id, Escala.from(escalaDto));
+        return new ResponseEntity<>(EscalaDto.from(escala), HttpStatus.OK);
     }
 
 }

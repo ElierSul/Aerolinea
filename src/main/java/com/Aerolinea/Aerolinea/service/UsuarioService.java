@@ -56,7 +56,7 @@ public class UsuarioService {
         usuarioToEdit.setApellido(usuario.getApellido());
         usuarioToEdit.setCelular(usuario.getCelular());
         usuarioToEdit.setEmail(usuario.getEmail());
-        usuarioToEdit.setPassword(usuario.getPassword());
+        usuarioToEdit.setContrasena(usuario.getContrasena());
         usuarioToEdit.setEquipaje(usuario.isEquipaje());
         return usuarioToEdit;
     }

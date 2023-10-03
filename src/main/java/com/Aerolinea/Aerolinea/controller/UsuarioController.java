@@ -1,10 +1,6 @@
 package com.Aerolinea.Aerolinea.controller;
 
-import com.Aerolinea.Aerolinea.model.MedioPago;
-import com.Aerolinea.Aerolinea.model.Traslado;
 import com.Aerolinea.Aerolinea.model.Usuario;
-import com.Aerolinea.Aerolinea.model.dto.MedioPagoDto;
-import com.Aerolinea.Aerolinea.model.dto.TrasladoDto;
 import com.Aerolinea.Aerolinea.model.dto.UsuarioDto;
 import com.Aerolinea.Aerolinea.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

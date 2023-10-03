@@ -45,8 +45,7 @@ public class BoletoService {
     @Transactional
     public Boleto editBoleto(Long id, Boleto boleto){
         Boleto boletoToEdit = getBoleto(id);
-        boletoToEdit.setPago(boleto.getPago());
-        boletoToEdit.setSerialNumber(boleto.getSerialNumber());
+        boletoToEdit.setLugar(boleto.getLugar());
         return boletoToEdit;
     }
 }

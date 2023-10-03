@@ -13,18 +13,16 @@ public class Boleto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "pago", nullable = false)
-    private double pago;
+    private int lugar;
 
-    private String serialNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_medio_pago")
     private MedioPago medioPago;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vuelo")
-    private Vuelo vuelo;*/
+    private Vuelo vuelo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
@@ -36,8 +34,7 @@ public class Boleto {
 
     public static Boleto from(BoletoDto boletoDto){
         Boleto boleto = new Boleto();
-        boleto.setSerialNumber(boletoDto.getSerialNumber());
-        boleto.setPago(boletoDto.getPago());
+        boleto.setLugar(boletoDto.getLugar());
         return boleto;
     }
 }
