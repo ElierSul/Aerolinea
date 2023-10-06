@@ -16,7 +16,7 @@ public class UsuarioDto {
     private String apellido;
     private String celular;
     private String email;
-    private String contrasena;
+    private String password;
     private boolean equipaje;
     private List<BoletoDto> boletosDto = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class UsuarioDto {
         usuarioDto.setApellido(usuario.getApellido());
         usuarioDto.setCelular(usuario.getCelular());
         usuarioDto.setEmail(usuario.getEmail());
-        usuarioDto.setContrasena(usuarioDto.getContrasena());
+        usuarioDto.setPassword(usuarioDto.getPassword());
         usuarioDto.setEquipaje(usuarioDto.isEquipaje());
         usuarioDto.setBoletosDto(usuario.getBoletos().stream().map(BoletoDto::from).collect(Collectors.toList()));
         return usuarioDto;

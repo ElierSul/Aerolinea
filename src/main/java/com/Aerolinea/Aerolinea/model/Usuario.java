@@ -3,12 +3,18 @@ package com.Aerolinea.Aerolinea.model;
 import com.Aerolinea.Aerolinea.model.dto.UsuarioDto;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQuery(name = "Usuario.findByEmail", query = "select u from Usuario u where u.email=:email")
 @Entity
 @Data
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "usuario")
 public class Usuario {
 
@@ -26,7 +32,11 @@ public class Usuario {
 
     private String email;
 
-    private String contrasena;
+    private String password;
+
+    private String status;
+
+    private String role;
 
     private boolean equipaje;
 
@@ -51,7 +61,7 @@ public class Usuario {
         usuario.setCelular(usuarioDto.getCelular());
         usuario.setEmail(usuarioDto.getEmail());
         usuario.setEquipaje(usuario.isEquipaje());
-        usuario.setContrasena(usuarioDto.getContrasena());
+        usuario.setPassword(usuarioDto.getPassword());
         return usuario;
     }
 }

@@ -1,18 +1,21 @@
 package com.Aerolinea.Aerolinea.controller;
 
+import com.Aerolinea.Aerolinea.constants.BoletoConstantes;
 import com.Aerolinea.Aerolinea.model.Usuario;
 import com.Aerolinea.Aerolinea.model.dto.UsuarioDto;
 import com.Aerolinea.Aerolinea.service.UsuarioService;
+import com.Aerolinea.Aerolinea.util.BoletoUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping(path = "/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -22,10 +25,24 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping
-    public ResponseEntity<UsuarioDto> addUsuario(@RequestBody final UsuarioDto usuarioDto){
-        Usuario usuario = usuarioService.addUsuario(Usuario.from(usuarioDto));
-        return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
+    @PostMapping("/signup")
+    public ResponseEntity<String> addUsuario(@RequestBody(required = true)Map<String, String> requestMap){
+        try{
+            return usuarioService.signUp(requestMap);
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return BoletoUtils.getResponseEntity(BoletoConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap){
+        try{
+            return usuarioService.login(requestMap);
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
+        return BoletoUtils.getResponseEntity(BoletoConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping
