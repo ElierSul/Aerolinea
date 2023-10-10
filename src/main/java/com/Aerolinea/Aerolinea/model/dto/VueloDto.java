@@ -39,4 +39,6 @@ public class VueloDto {
         return vueloDto;
     }
 
+    public void setNombre(String vueloDePrueba) {
+    }
 }

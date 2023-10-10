@@ -36,4 +36,7 @@ public class EscalaDto {
         }
         return escalaDto;
     }
+
+    public void setNombre(String escalaDePrueba) {
+    }
 }

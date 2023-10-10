@@ -23,4 +23,7 @@ public class TipoVueloDto {
         tipoVueloDto.setVuelosDto(tipoVuelo.getVuelos().stream().map(VueloDto::from).collect(Collectors.toList()));
         return tipoVueloDto;
     }
+
+    public void setNombre(String tipoDeVueloDePrueba) {
+    }
 }

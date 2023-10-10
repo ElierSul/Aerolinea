@@ -26,4 +26,6 @@ public class MedioPagoDto {
         return medioPagoDto;
     }
 
+    public void setNombre(String medioDePagoDePrueba) {
+    }
 }

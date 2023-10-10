@@ -33,4 +33,6 @@ public class BoletoDto {
         return boletoDto;
     }
 
+    public void setNumero(String number) {
+    }
 }
