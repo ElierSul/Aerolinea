@@ -42,7 +42,20 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "usuarios/login", "usuarios/signup", "usuarios/forgotPassword")
+                        "usuarios/login", "usuarios/signup", "api/v1/usuarios/forgotPassword",
+                        "api/v1/vuelos/listarVuelos", "api/v1/vuelos/buscarVueloPorId/{id}",
+                        "api/v1/usuarios/editarUsuario/{id}",
+                        "api/v1/usuarios/reservar/{idUsuario}/boletos/{idBoleto}/add",
+                        "api/v1/usuarios/eliminarReserva/{idUsuario}/boletos/{idBoleto}/remove",
+                        "api/v1/buscarBoleto/{id}", "api/v1/escalas/listarEscalas",
+                        "api/v1/escalas/buscarEscalaPorId/{id}", "api/v1/mediosPago/crearMedioPago",
+                        "api/v1/mediosPago/editarMedioPago/{id}",
+                        "api/v1/mediosPago/asociarMedioPagoBoleto/{idMedioPago}/boletos/{idBoleto}/add",
+                        "api/v1/mediosPago/removerAsociacion/{idMedioPago}/boletos/{idBoleto}/remove",
+                        "api/v1/vuelos/listarVuelos", "api/v1/vuelos/buscarVuelo/{id}",
+                        "api/v1/vuelos/asociarBoletoVuelo{idVuelo}/boleto/{idBoleto}/add",
+                        "api/v1/vuelos/removerAsociacionBoletoVuelo{idVuelo}/boleto/{idBoleto}/remove",
+                        "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

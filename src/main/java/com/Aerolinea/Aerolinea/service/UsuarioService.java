@@ -106,7 +106,7 @@ public class UsuarioService implements IUsuarioService{
         usuario.setCelular(requestMap.get("celular"));
         usuario.setEmail(requestMap.get("email"));
         usuario.setPassword(requestMap.get("password"));
-        usuario.setStatus("false");
+        usuario.setStatus("true");
         usuario.setRole("user");
         usuario.setEquipaje(Boolean.parseBoolean(requestMap.get("equipaje")));
         return usuario;
