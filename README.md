@@ -92,12 +92,11 @@ Modelado de diagrama de clases y entidad relacion, la creacion de estos modelado
 
 MODELO ENTIDAD RELACION
 
-![WhatsApp Image 2023-10-22 at 4.33.44 PM.jpeg](..%2F..%2FDownloads%2FWhatsApp%20Image%202023-10-22%20at%204.33.44%20PM.jpeg)
+![Entidad Relacion.jpeg](Entidad%20Relacion.jpeg)
 
 DIAGRAMA DE CLASES
 
-![AeroExpressLatam Diagrama Clases.drawio.png](..%2F..%2FDownloads%2FAeroExpressLatam%20Diagrama%20Clases.drawio.png)
-
+![Diagrama Clases.png](Diagrama%20Clases.png)
 
 
 
