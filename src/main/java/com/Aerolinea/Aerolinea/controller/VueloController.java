@@ -189,7 +189,7 @@ public class VueloController {
     @PutMapping(value = "{idVuelo}/boleto/{idBoleto}/remove")
     public ResponseEntity<VueloDto> removeBoletoToVuelo(@PathVariable final Long idVuelo,
                                                         @PathVariable final Long idBoleto){
-        Vuelo vuelo = vueloService.removeEscalaFromVuelo(idVuelo, idBoleto);
+        Vuelo vuelo = vueloService.removeBoletoToVuelo(idVuelo, idBoleto);
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 }

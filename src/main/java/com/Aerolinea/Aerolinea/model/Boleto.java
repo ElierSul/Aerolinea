@@ -12,7 +12,6 @@ public class Boleto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private int lugar;
 
 

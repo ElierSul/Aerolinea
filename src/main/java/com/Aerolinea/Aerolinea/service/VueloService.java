@@ -94,23 +94,11 @@ public class VueloService {
     }
 
     @Transactional
-    public Vuelo removeBoletoFromVuelo(Long idVuelo, Long idBoleto){
+    public Vuelo removeBoletoToVuelo(Long idVuelo, Long idBoleto){
         Vuelo vuelo = getVuelo(idVuelo);
         Boleto boleto = boletoService.getBoleto(idBoleto);
         vuelo.removeBoleto(boleto);
         return vuelo;
     }
 
-    @Transactional
-    public Vuelo reservarBoleto(Long idVuelo) {
-        Vuelo vuelo = getVuelo(idVuelo);
-        int lugaresDisponibles = vuelo.getLugaresDisponibles();
-
-        if (lugaresDisponibles >= 1) { // Verificar si hay lugares disponibles
-            vuelo.setLugaresDisponibles(lugaresDisponibles - 1); // Reducir un lugar disponible
-            return vuelo;
-        } else {
-            throw new RuntimeException("No hay lugares disponibles en este vuelo.");
-        }
-    }
 }

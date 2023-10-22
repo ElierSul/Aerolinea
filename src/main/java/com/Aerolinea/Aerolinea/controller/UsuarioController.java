@@ -128,7 +128,9 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se reservo el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = UsuarioDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada. En este caso se valida " +
+                    "la hora de la reserva, comparando la hora de despegue con la hora del sistema, si no cumple " +
+                    "la regla de las tres horas, se lanza una excepcion y se genera este codigo de error.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
                     "posible recuperar el usuario o el boleto por su id de la base de datos.",
