@@ -16,13 +16,10 @@ public class MedioPago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "pse", nullable = false)
     private boolean pse;
 
-    @Column(name = "tarjeta_credito", nullable = false)
     private boolean tarjetaCredito;
 
-    @Column(name = "tarjeta_debito", nullable = false)
     private boolean tarjetaDebito;
 
     @OneToMany(cascade = CascadeType.ALL)

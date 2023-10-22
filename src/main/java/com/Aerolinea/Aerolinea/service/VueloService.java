@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -100,5 +102,42 @@ public class VueloService {
         vuelo.removeBoleto(boleto);
         return vuelo;
     }
+
+    /*public List<Vuelo> getVuelosQueCumplenRequisitos(String ciudadOrigen, String ciudadDestino, Date fechaOrigen) {
+        List<Vuelo> vuelos = vueloRepository.findAll(); // Supongo que tienes un método para obtener todos los vuelos
+
+        List<Vuelo> vuelosQueCumplen = new ArrayList<>();
+
+        for (Vuelo vuelo : vuelos) {
+            boolean cumpleCiudadOrigen = false;
+            boolean cumpleCiudadDestino = false;
+            boolean cumpleFechaOrigen = false;
+
+            int i = 0;
+            while (i < vuelo.getEscalas().size() && !cumpleCiudadDestino) {
+                Escala escala = vuelo.getEscalas().get(i);
+
+                if (escala.getCiudadOrigen().equals(ciudadOrigen)) {
+                    cumpleCiudadOrigen = true;
+                }
+
+                if (escala.getFechaOrigen().equals(fechaOrigen)) {
+                    cumpleFechaOrigen = true;
+                }
+
+                if (cumpleCiudadOrigen && cumpleFechaOrigen) {
+                    cumpleCiudadDestino = escala.getCiudadDestino().equals(ciudadDestino);
+                }
+
+                i++;
+            }
+
+            if (cumpleCiudadOrigen && cumpleFechaOrigen && cumpleCiudadDestino) {
+                vuelosQueCumplen.add(vuelo);
+            }
+        }
+
+        return vuelosQueCumplen;
+    }*/
 
 }

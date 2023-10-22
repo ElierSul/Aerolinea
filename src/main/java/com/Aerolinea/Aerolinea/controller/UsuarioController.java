@@ -160,4 +160,5 @@ public class UsuarioController {
         Usuario usuario = usuarioService.removeBoletoFromUsuario(idUsuario, idBoleto);
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
+
 }

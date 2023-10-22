@@ -9,10 +9,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -141,7 +143,8 @@ public class VueloController {
 
     @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una asociacion entre un vuelo y una escala.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre la escala y el vuelo deseado.",
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre la escala y " +
+                    "el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = VueloDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
@@ -177,7 +180,8 @@ public class VueloController {
 
     @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una asociacion entre un vuelo y un boleto.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre el boleto y el vuelo deseado.",
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre el " +
+                    "boleto y el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = VueloDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
@@ -192,4 +196,26 @@ public class VueloController {
         Vuelo vuelo = vueloService.removeBoletoToVuelo(idVuelo, idBoleto);
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
+
+   /* @Operation(summary = "Este Endpoint, le permite a los usuarios buscar entre los vuelos aquellos que cumplan con " +
+            "los criterios de Ciudad de Origen, Ciudad de Destino y fecha.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. " +
+                    "Se devuelve la lista de vuelos que cumplen con los criterios pertienentes.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VueloDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar los vuelos de la base de datos.",
+                    content = @Content)})
+
+    @GetMapping("/buscarCoincidencias")
+    public ResponseEntity<List<Vuelo>> buscarVuelos(
+            @RequestParam("ciudadOrigen") String ciudadOrigen,
+            @RequestParam("ciudadDestino") String ciudadDestino,
+            @RequestParam("fechaOrigen") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaOrigen) {
+        List<Vuelo> vuelo = vueloService.getVuelosQueCumplenRequisitos(ciudadOrigen, ciudadDestino, fechaOrigen);
+        return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
+    }*/
 }
