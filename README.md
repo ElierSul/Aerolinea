@@ -40,7 +40,7 @@ El sistema de reserva de poder realizar las siguientes actividades
 
 Para la gestion de los vuelos se utilizo endpoint. Un endpoint en el contexto de desarrollo de aplicaciones se refiere a una URL específica a la que se puede acceder en un servicio web o API. Los endpoints son puntos de acceso que permiten a los clientes de la API (aplicaciones, dispositivos, usuarios, etc.) interactuar con el sistema y realizar operaciones específicas.
 
-para la creacion de los vuelos se uso un endpoint, el cual permite crear o registrar los vuelos
+Para la creacion de los vuelos se uso un endpoint, el cual permite crear o registrar los vuelos
 
 ![img.png](img.png)
 
@@ -48,7 +48,7 @@ En la gestion de vuelo, los desarrolladores implementaron nuevos criterios en el
 
 Endpoint de mostras vuelos 
 
-![img_1.png](img_1.png)
+![img_10.png](img_10.png)
 
 Endpoint de eliminar vuelos 
 
