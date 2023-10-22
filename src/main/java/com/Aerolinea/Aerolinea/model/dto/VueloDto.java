@@ -14,6 +14,7 @@ public class VueloDto {
     private Long id;
     private int lugaresDisponibles;
     private double costo;
+    private String codigo;
     private PlainAerolineaDto aerolineas;
     private PlainTipoVueloDto tipoVuelo;
     private List<EscalaDto> escalasDto = new ArrayList<>();
@@ -25,6 +26,7 @@ public class VueloDto {
         vueloDto.setId(vuelo.getId());
         vueloDto.setLugaresDisponibles(vuelo.getLugaresDisponibles());
         vueloDto.setCosto(vuelo.getCosto());
+        vueloDto.setCodigo(vuelo.getCodigo());
         vueloDto.setEscalasDto(vuelo.getEscalas().stream().map(EscalaDto::from).collect(Collectors.toList()));
         vueloDto.setBoletosDto(vuelo.getBoletos().stream().map(BoletoDto::from).collect(Collectors.toList()));
 

@@ -12,12 +12,16 @@ public class AerolineaDto {
 
     private Long id;
     private String nombre;
+    private String prefijo;
+    private int consecutivo;
     private List<VueloDto> vueloDto = new ArrayList<>();
 
     public static AerolineaDto from(Aerolinea aerolinea) {
         AerolineaDto aerolineaDto = new AerolineaDto();
         aerolineaDto.setId(aerolinea.getId());
         aerolineaDto.setNombre(aerolinea.getNombre());
+        aerolineaDto.setPrefijo(aerolinea.getPrefijo());
+        aerolineaDto.setConsecutivo(aerolinea.getConsecutivo());
         aerolineaDto.setVueloDto(aerolinea.getVuelos().stream().map(VueloDto::from).collect(Collectors.toList()));
         return aerolineaDto;
     }

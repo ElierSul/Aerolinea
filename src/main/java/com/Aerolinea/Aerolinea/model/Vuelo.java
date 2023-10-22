@@ -17,8 +17,8 @@ public class Vuelo {
     private Long id;
 
     private int lugaresDisponibles;
-
     private double costo;
+    private String codigo;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Boleto> boletos = new ArrayList<>();
@@ -54,6 +54,7 @@ public class Vuelo {
         Vuelo vuelo = new Vuelo();
         vuelo.setLugaresDisponibles(vueloDto.getLugaresDisponibles());
         vuelo.setCosto(vueloDto.getCosto());
+        vuelo.setCodigo(vueloDto.getCodigo());
         return vuelo;
     }
 }

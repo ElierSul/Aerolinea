@@ -16,11 +16,20 @@ public class Aerolinea {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre", nullable = false)
     private String nombre;
+    private String prefijo;
+    private int consecutivo;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Vuelo> vuelos = new ArrayList<>();
+
+    public String generarCodigoVuelo() {
+        return prefijo + String.format("%03d", consecutivo + 1);
+    }
+
+    public void incrementarConsecutivo() {
+        consecutivo++;
+    }
 
     public void addVuelo(Vuelo vuelo){
         vuelos.add(vuelo);
@@ -31,8 +40,9 @@ public class Aerolinea {
     }
     public static Aerolinea from(AerolineaDto aerolineaDto) {
         Aerolinea aerolinea = new Aerolinea();
-        aerolinea.setId(aerolineaDto.getId());
         aerolinea.setNombre(aerolineaDto.getNombre());
+        aerolinea.setPrefijo(aerolineaDto.getPrefijo());
+        aerolinea.setConsecutivo(aerolineaDto.getConsecutivo());
         return aerolinea;
     }
 }
