@@ -1,12 +1,14 @@
 package com.Aerolinea.Aerolinea.service;
 
 import com.Aerolinea.Aerolinea.model.Escala;
+import com.Aerolinea.Aerolinea.model.Vuelo;
 import com.Aerolinea.Aerolinea.model.exception.EscalaNotFoundException;
 import com.Aerolinea.Aerolinea.repository.EscalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -54,6 +56,11 @@ public class EscalaService {
         escalaToEdit.setFechaOrigen(escala.getFechaOrigen());
         escalaToEdit.setFechaDestino(escala.getFechaDestino());
         return escalaToEdit;
+    }
+
+    public List<Vuelo> getVuelosDisponiblesEntreTraslados(String ciudadOrigen, String ciudadDestino, Date fecha) {
+        // Lógica para buscar vuelos disponibles entre los traslados
+        return null;
     }
 
 }

@@ -1,26 +1,25 @@
 package com.Aerolinea.Aerolinea.controller;
 
-import com.Aerolinea.Aerolinea.constants.BoletoConstantes;
 import com.Aerolinea.Aerolinea.model.Usuario;
+import com.Aerolinea.Aerolinea.model.dto.MedioPagoDto;
+import com.Aerolinea.Aerolinea.model.dto.TipoVueloDto;
 import com.Aerolinea.Aerolinea.model.dto.UsuarioDto;
 import com.Aerolinea.Aerolinea.service.UsuarioService;
-import com.Aerolinea.Aerolinea.util.BoletoUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("usuarios")
-@Api(tags = "Usuario", description = "Controlador de usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -30,128 +29,130 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Registrar un usuario", notes = "Se recibe por el body un objeto de UsuarioDto" +
-            "y esta se registra en la base de datos")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo usuario y registralo en la base de datos.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo el registro correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping("/signup")
-    public ResponseEntity<String> addUsuario(@RequestBody(required = true)Map<String, String> requestMap){
-        try{
-            return usuarioService.signUp(requestMap);
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-        return BoletoUtils.getResponseEntity(BoletoConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+            @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
+                    "se creo un nuevo usuario.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: Significa que la solicitud esta mal formulada o " +
+                    "es incorrecta. Quizas algun dato erroneo en el JSON",
+                    content = @Content),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity: La solicitud es válida, pero no se " +
+                    "puede procesar debido a un conflicto en los datos enviados.",
+                    content = @Content) })
+
+    @PostMapping("/crear")
+    public ResponseEntity<UsuarioDto> addUsuario(@RequestBody final UsuarioDto usuarioDto){
+        Usuario usuario = usuarioService.addUsuario(Usuario.from(usuarioDto));
+        return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Iniciar sesion en el sistema", notes = "Se recibe por el body las " +
-            "credenciales del usuario que desea inciar sesion.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios consultar todos los usuarios que se encuentran " +
+            "registrados en la base de datos")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo el inicio de sesion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap){
-        try{
-            return usuarioService.login(requestMap);
-        }catch (Exception exception){
-            exception.printStackTrace();
-        }
-        return BoletoUtils.getResponseEntity(BoletoConstantes.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
+                    "respecto a la lista de usuarios.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar la lista de usuarios",
+                    content = @Content) })
 
-    //@PreAuthorize("hasRole('READ')")
-    @ApiOperation(value = "Mostrar usuarios", notes = "Se retorna una lista de usuarios de UsuarioDto")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se muestra la informacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @GetMapping("/listarUsuarios")
+    @GetMapping("/listar")
     public ResponseEntity<List<UsuarioDto>> getUsuarios(){
         List<Usuario> usuarios = usuarioService.getUsuarios();
         List<UsuarioDto> usuariosDto = usuarios.stream().map(UsuarioDto::from).collect(Collectors.toList());
         return new ResponseEntity<>(usuariosDto, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('READ')")
-    @ApiOperation(value = "Buscar un usuario en especifico", notes = "Se retorna el usuario asociado al ID suministrado de UsuarioDto")
+    @Operation(summary = "Este Endpoint, permite buscar un usuario con base en su id unico.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se muestra la informacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @GetMapping("/buscarUsuario/{id}")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
+                    "respecto al usuarios consultado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar la aerolinea de la base de datos.",
+                    content = @Content) })
+
+    @GetMapping(value = "{id}")
     public ResponseEntity<UsuarioDto> getusuario(@PathVariable final Long id){
         Usuario usuario = usuarioService.getUsuario(id);
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Eliminar un usuario", notes = "Se elimina el objeto de UsuarioDto asociado al ID suministrado")
+    @Operation(summary = "Este Endpoint, le permite eliminar un usuario de la base de datos.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la eliminacion de forma correcta"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @DeleteMapping("eliminarUsuario/{id}")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino el " +
+                    "usuario con el id especificado de la base de datos.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el usuario que se desea eliminar de la base de datos.",
+                    content = @Content) })
+
+    @DeleteMapping(value = "{id}")
     public ResponseEntity<UsuarioDto> deleteUsuario(@PathVariable final Long id){
         Usuario usuario = usuarioService.deleteUsuario(id);
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Editar un usuario", notes = "Se recibe en el body la informacion actualizada asociada " +
-            "al ID suministrado.")
+    @Operation(summary = "Este Endpoint, le permite editar un usuario especifico de la base de datos.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la actualizacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PutMapping("/editarUsuario/{id}")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
+                    "el usuario con el id especificado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada. Podria ser un dato mal diligenciado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el usuario que se desea editar de la base de datos.",
+                    content = @Content)})
+
+    @PutMapping(value = "{id}")
     public ResponseEntity<UsuarioDto> editUsuario(@PathVariable final Long id,
                                                     @RequestBody final UsuarioDto usuarioDto){
         Usuario usuario = usuarioService.editUsuario(id, Usuario.from(usuarioDto));
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Asociar un usuario a un boleto", notes = "Se reciben los ID del usuario respectivo y el boleto " +
-            "respectivo que se desean asociar.")
+    @Operation(summary = "Este Endpoint, le permite asignar un usuario a un boleto. Es decir, este es el metodo para reservar un vuelo.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la asociacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping("/reservar/{idUsuario}/boletos/{idBoleto}/add")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se reservo el vuelo deseado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el usuario o el boleto por su id de la base de datos.",
+                    content = @Content)})
+
+    @PostMapping(value = "{idUsuario}/boletos/{idBoleto}/add")
     public ResponseEntity<UsuarioDto> addUsuarioToBoleto(@PathVariable final Long idUsuario,
                                                            @PathVariable final Long idBoleto){
         Usuario usuario = usuarioService.addBoletoToUsuario(idUsuario, idBoleto);
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Desasociar un usuario de un boleto", notes = "Se reciben los ID del usuario respectivo y el boleto " +
-            "respectiva que se desean desasociar.")
+    @Operation(summary = "Este Endpoint, le permite  remover una asociacion entre un usuario y un vuelo. Es decir, este metodo le permite cancelar una reserva.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la desasociacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping("eliminarReserva/{idUsuario}/boletos/{idBoleto}/remove")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino reserva.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UsuarioDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el usuario o el boleto por su id de la base de datos.",
+                    content = @Content)})
+
+    @PostMapping(value = "{idUsuario}/boletos/{idBoleto}/remove")
     public ResponseEntity<UsuarioDto> removeBoletoFromUsuario(@PathVariable final Long idUsuario,
                                                                 @PathVariable final Long idBoleto){
         Usuario usuario = usuarioService.removeBoletoFromUsuario(idUsuario, idBoleto);

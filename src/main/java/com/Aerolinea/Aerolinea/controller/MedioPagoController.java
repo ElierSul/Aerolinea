@@ -3,10 +3,11 @@ package com.Aerolinea.Aerolinea.controller;
 import com.Aerolinea.Aerolinea.model.MedioPago;
 import com.Aerolinea.Aerolinea.model.dto.MedioPagoDto;
 import com.Aerolinea.Aerolinea.service.MedioPagoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/mediosPago")
-@Api(tags = "MedioPago", description = "Controlador de medios de pago")
+@RequestMapping("/mediosPago")
 public class MedioPagoController {
 
     private final MedioPagoService medioPagoService;
@@ -27,105 +27,133 @@ public class MedioPagoController {
         this.medioPagoService = medioPagoService;
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Registrar un medio de pago", notes = "Se recibe por el body un objeto de MedioPagoDto" +
-            "y esta se registra en la base de datos")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo medio de pago de tipo PSE, tarjeta de credito" +
+            " o tarjeta debito.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo el registro correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping("/crearMedioPago")
+            @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
+                    "se creo un nuevo medio de pago.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: Significa que la solicitud esta mal formulada o " +
+                    "es incorrecta. Quizas algun dato erroneo en el JSON",
+                    content = @Content),
+            @ApiResponse(responseCode = "422", description = "Unprocessable Entity: La solicitud es válida, pero no se " +
+                    "puede procesar debido a un conflicto en los datos enviados.",
+                    content = @Content) })
+
+    @PostMapping("/crear")
     public ResponseEntity<MedioPagoDto> addMedioPago(@RequestBody final MedioPagoDto medioPagoDto){
         MedioPago medioPago = medioPagoService.addMedioPago(MedioPago.from(medioPagoDto));
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('READ')")
-    @ApiOperation(value = "Mostrar medios de pago", notes = "Se retorna una lista de medios de pago de MedioPagoDto")
+    @Operation(summary = "Este Endpoint, permite a los usuarios consultar medios de pago que se encuentran " +
+            "registrados en la base de datos")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se muestra la informacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @GetMapping("/listarMediosPago")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
+                    "respecto a la lista de medios de pago.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar la lista de aerolineas",
+                    content = @Content) })
+
+    @GetMapping("/listar")
     public ResponseEntity<List<MedioPagoDto>> getMediosPago(){
         List<MedioPago> mediosPago = medioPagoService.getMediosPago();
         List<MedioPagoDto> medioPagoDtos = mediosPago.stream().map(MedioPagoDto::from).collect(Collectors.toList());
         return new ResponseEntity<>(medioPagoDtos, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('READ')")
-    @ApiOperation(value = "Buscar un medio de pago en especifico", notes = "Se retorna el medio de pago asociado al ID suministrado")
+    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un medio de pago con base en su id unico.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la busqueda correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @GetMapping(value = "/buscarMedioPagoPorId/{id}")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
+                    "respecto al medio de pago consultado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar la aerolinea de la base de datos.",
+                    content = @Content) })
+
+    @GetMapping(value = "{id}")
     public ResponseEntity<MedioPagoDto> getMedioPago(@PathVariable final Long id){
         MedioPago medioPago = medioPagoService.getMedioPago(id);
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Eliminar un medio de pago", notes = "Se elimina el objeto de MedioPagoDto asociado al ID suministrado")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un medio de pago de la base de datos.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la eliminacion de forma correcta"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @DeleteMapping(value = "/eliminarMedioPagoPorId/{id}")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino el " +
+                    "medio de pago con el id especificado de la base de datos.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el medio de pago que se desea eliminar de la base de datos.",
+                    content = @Content) })
+
+    @DeleteMapping(value = "{id}")
     public ResponseEntity<MedioPagoDto> deleteMedioPago(@PathVariable final Long id){
         MedioPago medioPago = medioPagoService.deleteMedioPago(id);
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Editar una medio de pago", notes = "Se recibe en el body la informacion actualizada asociada " +
-            "al ID suministrado.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un medio de pago especifico de la base de datos.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la actualizacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PutMapping(value = "/editarMedioPago/{id}")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
+                    "el medio de pago con el id especificado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada. Podria ser un dato mal diligenciado.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el medio de pago que se desea editar de la base de datos.",
+                    content = @Content)})
+
+    @PutMapping(value = "{id}")
     public ResponseEntity<MedioPagoDto> editMedioPago(@PathVariable final Long id,
                                                     @RequestBody final MedioPagoDto medioPagoDto){
         MedioPago medioPago = medioPagoService.editMedioPago(id, MedioPago.from(medioPagoDto));
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Asociar un medio de pago a un boleto", notes = "Se reciben los ID del medio de pago respectivo y el boleto " +
-            "respectivo que se desean asociar.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un medio de pago a un boleto.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la asociacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping(value = "/asociarMedioPagoBoleto/{idMedioPago}/boletos/{idBoleto}/add")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se asocio el medio de pago " +
+                    " con el boleto deseado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el medio de pago o el boleto por su id de la base de datos.",
+                    content = @Content)})
+
+    @PostMapping(value = "{idMedioPago}/boletos/{idBoleto}/add")
     public ResponseEntity<MedioPagoDto> addBoletoToMedioPago(@PathVariable final Long idMedioPago,
                                                            @PathVariable final Long idBoleto){
         MedioPago medioPago = medioPagoService.addBoletoToMedioPago(idMedioPago, idBoleto);
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Desasociar un medio de pago de un boleto", notes = "Se reciben los ID del medio de pago respectivo y el boleto " +
-            "respectiva que se desean desasociar.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un medio de pago y un boleto.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la desasociacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping(value = "removerAsociacion/{idMedioPago}/boletos/{idBoleto}/remove")
+            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre " +
+                    "el medio de pago y el boleto.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MedioPagoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
+                    "posible recuperar el medio de pago o el boleto por su id de la base de datos.",
+                    content = @Content)})
+
+    @PostMapping(value = "{idMedioPago}/boletos/{idBoleto}/remove")
     public ResponseEntity<MedioPagoDto> removeBoletoFromMedioPago(@PathVariable final Long idMedioPago,
                                                              @PathVariable final Long idBoleto){
         MedioPago medioPago = medioPagoService.removeBoletoFromMedioPago(idMedioPago, idBoleto);

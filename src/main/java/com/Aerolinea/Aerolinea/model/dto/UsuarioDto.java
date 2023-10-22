@@ -16,8 +16,6 @@ public class UsuarioDto {
     private String apellido;
     private String celular;
     private String email;
-    private String password;
-    private boolean equipaje;
     private List<BoletoDto> boletosDto = new ArrayList<>();
 
     public static UsuarioDto from(Usuario usuario){
@@ -28,8 +26,6 @@ public class UsuarioDto {
         usuarioDto.setApellido(usuario.getApellido());
         usuarioDto.setCelular(usuario.getCelular());
         usuarioDto.setEmail(usuario.getEmail());
-        usuarioDto.setPassword(usuarioDto.getPassword());
-        usuarioDto.setEquipaje(usuarioDto.isEquipaje());
         usuarioDto.setBoletosDto(usuario.getBoletos().stream().map(BoletoDto::from).collect(Collectors.toList()));
         return usuarioDto;
     }

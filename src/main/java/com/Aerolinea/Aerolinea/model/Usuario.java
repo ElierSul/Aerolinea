@@ -5,11 +5,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedQuery(name = "Usuario.findByEmail", query = "select u from Usuario u where u.email=:email")
 @Entity
 @Data
 @DynamicUpdate
@@ -31,36 +29,26 @@ public class Usuario {
 
     private String email;
 
-    private String password;
-
-    private String status;
-
-    private String role;
-
-    private boolean equipaje;
-
-
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Boleto> boletos = new ArrayList<>();
 
-    public void addBoleto(Boleto boleto){
+
+    public void addBoleto(Boleto boleto) {
         boletos.add(boleto);
     }
 
-    public void removeBoleto(Boleto boleto){
+    public void removeBoleto(Boleto boleto) {
         boletos.remove(boleto);
     }
 
-    public static Usuario from(UsuarioDto usuarioDto){
+    public static Usuario from(UsuarioDto usuarioDto) {
         Usuario usuario = new Usuario();
         usuario.setDocumento(usuarioDto.getDocumento());
         usuario.setNombre(usuarioDto.getNombre());
         usuario.setApellido(usuarioDto.getApellido());
         usuario.setCelular(usuarioDto.getCelular());
         usuario.setEmail(usuarioDto.getEmail());
-        usuario.setEquipaje(usuario.isEquipaje());
-        usuario.setPassword(usuarioDto.getPassword());
         return usuario;
     }
 }

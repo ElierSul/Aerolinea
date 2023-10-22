@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "traslado")
+@Table(name = "escala")
 public class Escala {
 
     @Id

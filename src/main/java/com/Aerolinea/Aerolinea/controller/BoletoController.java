@@ -3,10 +3,11 @@ package com.Aerolinea.Aerolinea.controller;
 import com.Aerolinea.Aerolinea.model.Boleto;
 import com.Aerolinea.Aerolinea.model.dto.BoletoDto;
 import com.Aerolinea.Aerolinea.service.BoletoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/boletos")
-@Api(tags = "Boletos", description = "Controlador de boletos")
+@RequestMapping("/boletos")
 public class BoletoController {
 
     private final BoletoService boletoService;
@@ -27,73 +27,92 @@ public class BoletoController {
         this.boletoService = boletoService;
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Registrar un boleto", notes = "Se recibe por el body un objeto de BoletoDto" +
-            "y esta se registra en la base de datos")
+
+    @Operation(summary = "Este Endpoint permite Agregar un nuevo Boleto")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo el registro correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PostMapping("/crearBoleto")
+            @ApiResponse(responseCode = "200", description = "¡La solicitud se ha completado!",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BoletoDto.class)) }),
+            @ApiResponse(responseCode = "201", description = "¡La solicitud ha creado un Boleto con éxito!.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Boleto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Error por solicitud mal formada, Boleto no creado",
+                    content = @Content),
+            @ApiResponse(responseCode = "422", description = "La solicitud no procesó debido a un conflicto de datos en la petición, Boleto no creado.",
+                    content = @Content) })
+
+    @PostMapping("/crear")
     public ResponseEntity<BoletoDto> addBoleto(@RequestBody final BoletoDto boletoDto){
         Boleto boleto = boletoService.addBoleto(Boleto.from(boletoDto));
         return new ResponseEntity<>(BoletoDto.from(boleto), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('READ')")
-    @ApiOperation(value = "Mostrar boletos", notes = "Se retorna una lista de boletos de BoletosDto")
+    @Operation(summary = "Este Endpoint nos permite Traer todos los Boletos")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se muestra la informacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @GetMapping("/listarBoletos")
+            @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!. Boletos existentes.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BoletoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Solicitud inconcreta",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Usted no tiene autorización para esta solicitud",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No existen Boletos",
+                    content = @Content) })
+
+    @GetMapping("/listar")
     public ResponseEntity<List<BoletoDto>> getBoletos(){
         List<Boleto> boletos = boletoService.getBoletos();
         List<BoletoDto> boletosDto = boletos.stream().map(BoletoDto::from).collect(Collectors.toList());
         return new ResponseEntity<>(boletosDto, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('READ')")
-    @ApiOperation(value = "Buscar un boleto en especifico", notes = "Se retorna el boleto asociado al ID suministrado")
+    @Operation(summary = "Este Endpoint nos permite Traer un Boleto")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la busqueda correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @GetMapping(value = "/buscarBoleto/{id}")
+            @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!. Boleto existente.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BoletoDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Solicitud inconcreta",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Usted no tiene autorización para esta solicitud",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No existe Boleto",
+                    content = @Content) })
+
+    @GetMapping(value = "{id}")
     public ResponseEntity<BoletoDto> getBoleto(@PathVariable final Long id){
         Boleto boleto = boletoService.getBoleto(id);
         return new ResponseEntity<>(BoletoDto.from(boleto), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Eliminar un boleto", notes = "Se elimina el objeto de BoletoDto asociado al ID suministrado")
+    @Operation(summary = "Este Endpoint nos permite Eliminar un Boleto")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la eliminacion de forma correcta"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @DeleteMapping(value = "/eliminarBoleto/{id}")
+            @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!. Boleto eliminado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BoletoDto.class)) }),
+            @ApiResponse(responseCode = "204", description = "Solicitud con éxito, pero sin contenido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Solicitud inconcreta",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No existe Boleto",
+                    content = @Content) })
+    @DeleteMapping(value = "{id}")
     public ResponseEntity<BoletoDto> deleteBoleto(@PathVariable final Long id){
         Boleto boleto = boletoService.deleteBoleto(id);
         return new ResponseEntity<>(BoletoDto.from(boleto), HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasRole('WRITE')")
-    @ApiOperation(value = "Editar un boleto", notes = "Se recibe en el body la informacion actualizada asociada " +
-            "al ID suministrado.")
+    @Operation(summary = "Este Endpoint nos permite Editar un Boleto")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se realizo la actualizacion correctamente"),
-            @ApiResponse(code = 400, message = "Bad Request, se ingreso algo mal, verifica la informacion"),
-            @ApiResponse(code = 301, message = "Permisos no otorgados y/o credenciales erroneas"),
-            @ApiResponse(code = 500, message = "Error inesperado del sistema")
-    })
-    @PutMapping(value = "/editarBoleto/{id}")
+            @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!, Boleto eliminado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BoletoDto.class)) }),
+            @ApiResponse(responseCode = "204", description = "Solicitud con éxito, pero sin contenido.",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Solicitud inconcreta",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "No existe Boleto",
+                    content = @Content) })
+    @PutMapping(value = "{id}")
     public ResponseEntity<BoletoDto> editBoleto(@PathVariable final Long id,
                                                 @RequestBody final BoletoDto boletoDto){
         Boleto editedBoleto = boletoService.editBoleto(id, Boleto.from(boletoDto));

@@ -16,10 +16,8 @@ public class Vuelo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "lugares_disponibles", nullable = false)
     private int lugaresDisponibles;
 
-    @Column(name = "costo", nullable = false)
     private double costo;
 
     @OneToMany(cascade = CascadeType.ALL)

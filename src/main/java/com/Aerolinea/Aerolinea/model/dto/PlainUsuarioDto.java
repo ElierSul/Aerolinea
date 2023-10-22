@@ -12,7 +12,6 @@ public class PlainUsuarioDto {
     private String apellido;
     private String celular;
     private String email;
-    private boolean equipaje;
 
     public static PlainUsuarioDto from(Usuario usuario){
         PlainUsuarioDto plainUsuarioDto = new PlainUsuarioDto();
@@ -22,7 +21,6 @@ public class PlainUsuarioDto {
         plainUsuarioDto.setApellido(usuario.getApellido());
         plainUsuarioDto.setCelular(usuario.getCelular());
         plainUsuarioDto.setEmail(usuario.getEmail());
-        plainUsuarioDto.setEquipaje(usuario.isEquipaje());
         return plainUsuarioDto;
     }
 }
