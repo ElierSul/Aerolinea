@@ -28,7 +28,8 @@ public class AerolineaController {
     }
 
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios crear una nueva aerolinea")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear una nueva aerolinea. En este endpoint, el usuario debe diligenciar los siguientes " +
+            "datos en el JSON: nombre y prefijo. Los demas datos se agregan automaticamente al realizar las respectivas asociaciones.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
                     "se creo una nueva aerolinea satisfactoriamente",
@@ -67,7 +68,8 @@ public class AerolineaController {
         return new ResponseEntity<>(aerolineasDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios buscar una aerolinea con base en su id unico.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios buscar una aerolinea con base en su id unico. Los usuarios deben suministrar el id " +
+            "de la aerolinea que desan buscar. En caso de no existir se lanza una excepcion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto a la aerolinea consultada.",
@@ -85,7 +87,8 @@ public class AerolineaController {
         return new ResponseEntity<>(AerolineaDto.from(aerolinea), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una aerolinea de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una aerolinea de la base de datos. El usuario debe de suministrar el id " +
+            "de la aerolinea que desea eliminar.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la aerolinea con el id especificado de " +
                     "la base de datos.",
@@ -103,7 +106,8 @@ public class AerolineaController {
         return new ResponseEntity<>(AerolineaDto.from(aerolinea), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios editar una aerolinea especifica de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios editar una aerolinea especifica de la base de datos. El usuario debe de suministrar el " +
+            "id de la aerolinea que desea editar. Y en el JSON debe de suministrar el nombre y el prefijo.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
                     "la aerolinea con el id especificado.",
@@ -122,7 +126,8 @@ public class AerolineaController {
         return new ResponseEntity<>(AerolineaDto.from(aerolinea), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar una aerolinea a un vuelo.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar una aerolinea a un vuelo. El usuario debe de suministrar el id del vuelo y el id " +
+            "de la aerolinea respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se asocio la aerolinea con el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
@@ -140,7 +145,8 @@ public class AerolineaController {
         return new ResponseEntity<>(AerolineaDto.from(aerolinea), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un vuelo y una aerolinea.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un vuelo y una aerolinea. Los usuarios deben suministrar " +
+            "el id del vuelo y el id de la aerolinea respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre la aerolinea con el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",

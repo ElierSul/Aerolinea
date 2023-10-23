@@ -50,9 +50,7 @@ public class MedioPagoService {
     @Transactional
     public MedioPago editMedioPago(Long id, MedioPago medioPago){
         MedioPago medioPagoToEdit = getMedioPago(id);
-        medioPagoToEdit.setPse(medioPago.isPse());
-        medioPagoToEdit.setTarjetaCredito(medioPago.isTarjetaCredito());
-        medioPagoToEdit.setTarjetaDebito(medioPago.isTarjetaDebito());
+        medioPagoToEdit.setNombre(medioPago.getNombre());
         return medioPagoToEdit;
     }
 

@@ -29,7 +29,9 @@ public class VueloController {
         this.vueloService = vueloService;
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo vuelo.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo vuelo. Los unicos datos que debe proporcionar " +
+            "el usuario son: lugaresDisponibles y costo. Los demas datos se generan automaticamente al realizar las asignaciones " +
+            "pertienentes.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
                     "se creo un nuevo vuelo satisfactoriamente",
@@ -49,7 +51,7 @@ public class VueloController {
     }
 
     @Operation(summary = "Este Endpoint, permite a los usuarios consultar todos los vuelos que se encuentran " +
-            "registrados en la base de datos")
+            "registrados en la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto a la lista de vuelos.",
@@ -68,7 +70,8 @@ public class VueloController {
         return new ResponseEntity<>(vueloDtos, HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un vuelo con base en su id unico.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un vuelo con base en su id unico. El usuario debe diligenciar el id del " +
+            "vuelo que desea buscar. En caso de no existir el vuelo que se esta buscando se genera una excepcion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto al vuelo consultado.",
@@ -86,7 +89,8 @@ public class VueloController {
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un vuelo de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un vuelo de la base de datos. El usuario debe suministrar el " +
+            "id del vuelo que desea eliminar de la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino el vuelo con el id especificado de " +
                     "la base de datos.",
@@ -104,7 +108,8 @@ public class VueloController {
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un vuelo especifico de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un vuelo especifico de la base de datos. El usuario debe suministrar " +
+            "el id del vuelo que desea editar. Asi como los datos en el JSON, en este caso los lugares disponibles y el costo.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
                     "el vuelo con el id especificado.",
@@ -123,7 +128,8 @@ public class VueloController {
         return new ResponseEntity<>(VueloDto.from(editedVuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar una escala a un vuelo")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios asociar una escala a un vuelo. El usuario debe de suministrar el " +
+            "id del vuelo y el id de la escala respectivamente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se asocio la escala al vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
@@ -141,7 +147,8 @@ public class VueloController {
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una asociacion entre un vuelo y una escala.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una asociacion entre un vuelo y una escala. El usuario debe de suministrar " +
+            "el id del vuelo y el id de la escala respectivamente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre la escala y " +
                     "el vuelo deseado.",
@@ -153,19 +160,22 @@ public class VueloController {
                     "posible recuperar la aerolineael boleto o el vuelo por su id de la base de datos.",
                     content = @Content)})
 
-    @PutMapping(value = "{idVuelo}/escalas/{idEscala}/remove")
+    @PostMapping(value = "{idVuelo}/escalas/{idEscala}/remove")
     public ResponseEntity<VueloDto> removeEscalaToVuelo(@PathVariable final Long idVuelo,
                                                      @PathVariable final Long idEscala){
         Vuelo vuelo = vueloService.removeEscalaFromVuelo(idVuelo, idEscala);
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un vuelo a un boleto")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un vuelo a un boleto. Adicionalmente se valida " +
+            "internamente que aun existan lugares disponibles en el vuelo, en caso que no existan lugares disponibles, " +
+            "se lanza una excepcion. El usuario debe de suministrar el id del vuelo y el id del boleto respectivamente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se asocio el vuelo con el boleto deseado.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = VueloDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
+            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada. Es " +
+                    "posible que ya no existan lugares disponibles.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
                     "posible recuperar el boleto o el vuelo por su id de la base de datos.",
@@ -178,7 +188,8 @@ public class VueloController {
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una asociacion entre un vuelo y un boleto.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar una asociacion entre un vuelo y un boleto. El usuario debe de suministrar el " +
+            "id del vuelo y el id del boleto respectivamente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre el " +
                     "boleto y el vuelo deseado.",
@@ -190,32 +201,11 @@ public class VueloController {
                     "posible recuperar la aerolineael boleto o el vuelo por su id de la base de datos.",
                     content = @Content)})
 
-    @PutMapping(value = "{idVuelo}/boleto/{idBoleto}/remove")
+    @PostMapping(value = "{idVuelo}/boleto/{idBoleto}/remove")
     public ResponseEntity<VueloDto> removeBoletoToVuelo(@PathVariable final Long idVuelo,
                                                         @PathVariable final Long idBoleto){
         Vuelo vuelo = vueloService.removeBoletoToVuelo(idVuelo, idBoleto);
         return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
     }
 
-   /* @Operation(summary = "Este Endpoint, le permite a los usuarios buscar entre los vuelos aquellos que cumplan con " +
-            "los criterios de Ciudad de Origen, Ciudad de Destino y fecha.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. " +
-                    "Se devuelve la lista de vuelos que cumplen con los criterios pertienentes.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VueloDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
-                    "posible recuperar los vuelos de la base de datos.",
-                    content = @Content)})
-
-    @GetMapping("/buscarCoincidencias")
-    public ResponseEntity<List<Vuelo>> buscarVuelos(
-            @RequestParam("ciudadOrigen") String ciudadOrigen,
-            @RequestParam("ciudadDestino") String ciudadDestino,
-            @RequestParam("fechaOrigen") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaOrigen) {
-        List<Vuelo> vuelo = vueloService.getVuelosQueCumplenRequisitos(ciudadOrigen, ciudadDestino, fechaOrigen);
-        return new ResponseEntity<>(VueloDto.from(vuelo), HttpStatus.OK);
-    }*/
 }

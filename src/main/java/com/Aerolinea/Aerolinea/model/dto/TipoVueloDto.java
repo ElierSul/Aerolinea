@@ -11,15 +11,13 @@ import java.util.stream.Collectors;
 public class TipoVueloDto {
 
     private Long id;
-    private boolean privado;
-    private boolean publico;
+    private String nombre;
     private List<VueloDto> vuelosDto = new ArrayList<>();
 
     public static TipoVueloDto from(TipoVuelo tipoVuelo){
         TipoVueloDto tipoVueloDto = new TipoVueloDto();
         tipoVueloDto.setId(tipoVuelo.getId());
-        tipoVueloDto.setPrivado(tipoVuelo.isPrivado());
-        tipoVueloDto.setPublico(tipoVuelo.isPublico());
+        tipoVueloDto.setNombre(tipoVuelo.getNombre());
         tipoVueloDto.setVuelosDto(tipoVuelo.getVuelos().stream().map(VueloDto::from).collect(Collectors.toList()));
         return tipoVueloDto;
     }

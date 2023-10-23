@@ -29,7 +29,9 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo usuario y registralo en la base de datos.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo usuario y registrarlo en la base de datos. " +
+            "Los datos que el usuario debe diligenciar en este endpoint son: documento, nombre, apellido, celular, email. Los demas datos se " +
+            "agregan automaticamente con las respectivas asignaciones.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
                     "se creo un nuevo usuario.",
@@ -68,7 +70,8 @@ public class UsuarioController {
         return new ResponseEntity<>(usuariosDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, permite buscar un usuario con base en su id unico.")
+    @Operation(summary = "Este Endpoint, permite buscar un usuario con base en su id unico. Los usuarios deben de suministrar el id del usuario que " +
+            "desean buscar en la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto al usuarios consultado.",
@@ -77,7 +80,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
-                    "posible recuperar la aerolinea de la base de datos.",
+                    "posible recuperar el usuario de la base de datos.",
                     content = @Content) })
 
     @GetMapping(value = "{id}")
@@ -86,7 +89,8 @@ public class UsuarioController {
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite eliminar un usuario de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite eliminar un usuario de la base de datos. El usuario debe de suministrar el id del usuario " +
+            "que desea eliminar de la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino el " +
                     "usuario con el id especificado de la base de datos.",
@@ -104,7 +108,8 @@ public class UsuarioController {
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite editar un usuario especifico de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite editar un usuario especifico de la base de datos. Se debe de suministrar el id del usuario que se desea " +
+            "editar y en el JSON se debe diligenciar los siguientes datos: documento, nombre, apellido, celular, email.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
                     "el usuario con el id especificado.",
@@ -123,7 +128,8 @@ public class UsuarioController {
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite asignar un usuario a un boleto. Es decir, este es el metodo para reservar un vuelo.")
+    @Operation(summary = "Este Endpoint, le permite asignar un usuario a un boleto. Es decir, este es el metodo para reservar un vuelo. El usuario debe " +
+            "suministrar el id del usuario y el id del boleto respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se reservo el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
@@ -136,14 +142,15 @@ public class UsuarioController {
                     "posible recuperar el usuario o el boleto por su id de la base de datos.",
                     content = @Content)})
 
-    @PostMapping(value = "{idUsuario}/boletos/{idBoleto}/add")
+    @PostMapping(value = "{idUsuario}/boletos/{idBoleto}/reservar")
     public ResponseEntity<UsuarioDto> addUsuarioToBoleto(@PathVariable final Long idUsuario,
                                                            @PathVariable final Long idBoleto){
         Usuario usuario = usuarioService.addBoletoToUsuario(idUsuario, idBoleto);
         return new ResponseEntity<>(UsuarioDto.from(usuario), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite  remover una asociacion entre un usuario y un vuelo. Es decir, este metodo le permite cancelar una reserva.")
+    @Operation(summary = "Este Endpoint, le permite  remover una asociacion entre un usuario y un vuelo. Es decir, este metodo le permite " +
+            "cancelar una reserva. El usuario debe suministrar el id del usuario y el id del boleto respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino reserva.",
                     content = { @Content(mediaType = "application/json",

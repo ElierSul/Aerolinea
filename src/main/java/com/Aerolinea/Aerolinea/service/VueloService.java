@@ -9,8 +9,10 @@ import com.Aerolinea.Aerolinea.model.exception.EscalaIsAlreadyAssignedException;
 import com.Aerolinea.Aerolinea.model.exception.VueloNotFoundException;
 import com.Aerolinea.Aerolinea.repository.VueloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,9 +92,22 @@ public class VueloService {
         if (Objects.nonNull(boleto.getVuelo())) {
             throw new BoletoIsAlreadyAssignedVueloException(idBoleto, idVuelo);
         }
-        vuelo.addBoleto(boleto);
-        boleto.setVuelo(vuelo);
-        return vuelo;
+
+        int lugaresDisponibles = vuelo.getLugaresDisponibles();
+
+        if (lugaresDisponibles > 0) {
+            vuelo.setLugaresDisponibles(lugaresDisponibles - 1);
+
+            int numeroDeLugar = lugaresDisponibles;
+            boleto.setLugar(numeroDeLugar);
+
+            vuelo.addBoleto(boleto);
+            boleto.setVuelo(vuelo);
+
+            return vuelo;
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay lugares disponibles.");
+        }
     }
 
     @Transactional
@@ -102,42 +117,5 @@ public class VueloService {
         vuelo.removeBoleto(boleto);
         return vuelo;
     }
-
-    /*public List<Vuelo> getVuelosQueCumplenRequisitos(String ciudadOrigen, String ciudadDestino, Date fechaOrigen) {
-        List<Vuelo> vuelos = vueloRepository.findAll(); // Supongo que tienes un método para obtener todos los vuelos
-
-        List<Vuelo> vuelosQueCumplen = new ArrayList<>();
-
-        for (Vuelo vuelo : vuelos) {
-            boolean cumpleCiudadOrigen = false;
-            boolean cumpleCiudadDestino = false;
-            boolean cumpleFechaOrigen = false;
-
-            int i = 0;
-            while (i < vuelo.getEscalas().size() && !cumpleCiudadDestino) {
-                Escala escala = vuelo.getEscalas().get(i);
-
-                if (escala.getCiudadOrigen().equals(ciudadOrigen)) {
-                    cumpleCiudadOrigen = true;
-                }
-
-                if (escala.getFechaOrigen().equals(fechaOrigen)) {
-                    cumpleFechaOrigen = true;
-                }
-
-                if (cumpleCiudadOrigen && cumpleFechaOrigen) {
-                    cumpleCiudadDestino = escala.getCiudadDestino().equals(ciudadDestino);
-                }
-
-                i++;
-            }
-
-            if (cumpleCiudadOrigen && cumpleFechaOrigen && cumpleCiudadDestino) {
-                vuelosQueCumplen.add(vuelo);
-            }
-        }
-
-        return vuelosQueCumplen;
-    }*/
 
 }

@@ -16,8 +16,7 @@ public class TipoVuelo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean privado;
-    private boolean publico;
+    private String nombre;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Vuelo> vuelos = new ArrayList<>();
@@ -32,8 +31,7 @@ public class TipoVuelo {
 
     public static TipoVuelo from(TipoVueloDto tipoVueloDto){
         TipoVuelo tipoVuelo = new TipoVuelo();
-        tipoVuelo.setPublico(tipoVueloDto.isPublico());
-        tipoVuelo.setPrivado(tipoVueloDto.isPrivado());
+        tipoVuelo.setNombre(tipoVueloDto.getNombre());
         return tipoVuelo;
     }
 }

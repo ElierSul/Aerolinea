@@ -50,8 +50,7 @@ public class TipoVueloService {
     @Transactional
     public TipoVuelo editTipoVuelo(Long id, TipoVuelo tipoVuelo){
         TipoVuelo tipoVueloToEdit = getTipoVuelo(id);
-        tipoVueloToEdit.setPrivado(tipoVuelo.isPrivado());
-        tipoVueloToEdit.setPublico(tipoVuelo.isPublico());
+        tipoVueloToEdit.setNombre(tipoVuelo.getNombre());
         return tipoVuelo;
     }
 

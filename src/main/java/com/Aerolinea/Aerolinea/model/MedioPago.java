@@ -16,11 +16,7 @@ public class MedioPago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean pse;
-
-    private boolean tarjetaCredito;
-
-    private boolean tarjetaDebito;
+    private String nombre;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Boleto> boletos = new ArrayList<>();
@@ -35,9 +31,7 @@ public class MedioPago {
 
     public static MedioPago from(MedioPagoDto medioPagoDto){
         MedioPago medioPago = new MedioPago();
-        medioPago.setPse(medioPagoDto.isPse());
-        medioPago.setTarjetaCredito(medioPagoDto.isTarjetaCredito());
-        medioPago.setTarjetaDebito(medioPagoDto.isTarjetaDebito());
+        medioPago.setNombre(medioPagoDto.getNombre());
         return medioPago;
     }
 }

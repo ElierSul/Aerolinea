@@ -59,15 +59,4 @@ public class EscalaService {
         return escalaToEdit;
     }
 
-    public List<Vuelo> getVuelosDisponiblesEntreTraslados(String ciudadOrigen, String ciudadDestino, Date fechaOrigen) {
-        List<Escala> escalas = escalaRepository.findAll();
-        for (Escala escala : escalas) {
-            if (escala.getCiudadOrigen().equals(ciudadOrigen) &&
-                    escala.getCiudadDestino().equals(ciudadDestino) &&
-                    escala.getFechaOrigen().equals(fechaOrigen)) {
-
-            }
-        }
-        return null;
-    }
 }

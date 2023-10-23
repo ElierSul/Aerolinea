@@ -16,7 +16,7 @@ Contenido
 
 # Requisitos
 
-Para la programacion del Sistema de Reserva de Vuelos, asegúrate de tener instalados los siguientes requisitos:
+Para el correcto despliegue del Sistema de Reserva de Vuelos (AeroExpressLatam), asegúrate de tener instalados los siguientes requisitos:
 
 * Java 8 o superior
 * Base de datos (MySQL)
@@ -30,7 +30,9 @@ El sistema de reserva de poder realizar las siguientes actividades
 1. Gestionar vuelos
 2. Buscar vuelos por criterios de búsqueda
 3. Reservar un vuelo
-4. Permitir búsqueda por escalas en los vuelos
+4. Manejo de excepciones
+5. Despliegue
+6. Documentacion con Swagger
 
 
    
@@ -42,48 +44,49 @@ Para la gestion de los vuelos se utilizo endpoint. Un endpoint en el contexto de
 
 Para la creacion de los vuelos se uso un endpoint, el cual permite crear o registrar los vuelos
 
-![img.png](img.png)
+![img_11.png](img_11.png)
 
 En la gestion de vuelo, los desarrolladores implementaron nuevos criterios en el cual al usurio se le permite mostrar, eliminar,editar y deasociar la informacion de los vuelos 
 
 Endpoint de mostras vuelos 
 
-![img_10.png](img_10.png)
+![img_12.png](img_12.png)
 
 Endpoint de eliminar vuelos 
 
-![img_2.png](img_2.png)
+![img_13.png](img_13.png)
 
 Endpoint de editar vuelos 
 
-![img_3.png](img_3.png)
+![img_14.png](img_14.png)
 
 Endpoint para asociar un vuelo con una escala
 
-![img_4.png](img_4.png)
+![img_15.png](img_15.png)
 
 Endpoint para desasociar un vuelo de una escala
 
-![img_5.png](img_5.png)
+![img_16.png](img_16.png)
 
 Endpoint para asociar un vuelo y un boleto
 
-![img_6.png](img_6.png)
+![img_17.png](img_17.png)
 
 Endpoint para desasociar un vuelo de un boleto
 
-![img_7.png](img_7.png)
+![img_18.png](img_18.png)
 
 2.1 Buscar vuelos por criterios de busquedad
 
 En este endpoint se hace las busqueda de criterio atravez de su id
 
-![img_8.png](img_8.png)
+![img_19.png](img_19.png)
 
-3.1 Reservar un vuelo 
-este endpoint, le permite al usuario por hacer una reserva de un vuelo 
+3.1 Reservar un vuelo
 
-![img_9.png](img_9.png)
+Este endpoint, le permite al usuario hacer la reserva de un vuelo 
+
+![img_20.png](img_20.png)
 
 
 # Documentacion 
@@ -92,7 +95,7 @@ Modelado de diagrama de clases y entidad relacion, la creacion de estos modelado
 
 MODELO ENTIDAD RELACION
 
-![Entidad Relacion.jpeg](Entidad%20Relacion.jpeg)
+![Entidad Relacion.png](Entidad%20Relacion.png)
 
 DIAGRAMA DE CLASES
 

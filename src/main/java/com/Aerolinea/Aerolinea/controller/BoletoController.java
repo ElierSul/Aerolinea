@@ -28,7 +28,9 @@ public class BoletoController {
     }
 
 
-    @Operation(summary = "Este Endpoint permite Agregar un nuevo Boleto")
+    @Operation(summary = "Este Endpoint permite Agregar un nuevo Boleto. En este endpoint no es necesario que el " +
+            "usuario realice ningun cambio en el JSON, ya que todas las asignaciones se realizan de forma logica en " +
+            "la capa service.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "¡La solicitud se ha completado!",
                     content = { @Content(mediaType = "application/json",
@@ -47,7 +49,7 @@ public class BoletoController {
         return new ResponseEntity<>(BoletoDto.from(boleto), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint nos permite Traer todos los Boletos")
+    @Operation(summary = "Este Endpoint nos permite listar todos los Boletos registrados en la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!. Boletos existentes.",
                     content = { @Content(mediaType = "application/json",
@@ -66,7 +68,8 @@ public class BoletoController {
         return new ResponseEntity<>(boletosDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint nos permite Traer un Boleto")
+    @Operation(summary = "Este Endpoint nos permite buscar un Boleto con base en su id unico. El usuario debe suministrar el id del boleto que desea buscar. " +
+            "En caso de no encontrarlo en la base de datos se lanza una excepcion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!. Boleto existente.",
                     content = { @Content(mediaType = "application/json",
@@ -84,7 +87,8 @@ public class BoletoController {
         return new ResponseEntity<>(BoletoDto.from(boleto), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint nos permite Eliminar un Boleto")
+    @Operation(summary = "Este Endpoint nos permite Eliminar un Boleto. El usuario debe de suministrar el id del boleto que desea eliminar de " +
+            "la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!. Boleto eliminado.",
                     content = { @Content(mediaType = "application/json",
@@ -101,21 +105,4 @@ public class BoletoController {
         return new ResponseEntity<>(BoletoDto.from(boleto), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint nos permite Editar un Boleto")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "¡Solicitud con éxito!, Boleto eliminado.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = BoletoDto.class)) }),
-            @ApiResponse(responseCode = "204", description = "Solicitud con éxito, pero sin contenido.",
-                    content = @Content),
-            @ApiResponse(responseCode = "400", description = "Solicitud inconcreta",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "No existe Boleto",
-                    content = @Content) })
-    @PutMapping(value = "{id}")
-    public ResponseEntity<BoletoDto> editBoleto(@PathVariable final Long id,
-                                                @RequestBody final BoletoDto boletoDto){
-        Boleto editedBoleto = boletoService.editBoleto(id, Boleto.from(boletoDto));
-        return new ResponseEntity<>(BoletoDto.from(editedBoleto), HttpStatus.OK);
-    }
 }

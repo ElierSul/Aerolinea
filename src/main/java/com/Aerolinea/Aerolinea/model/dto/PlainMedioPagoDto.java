@@ -6,16 +6,12 @@ import lombok.Data;
 @Data
 public class PlainMedioPagoDto {
     private Long id;
-    private boolean pse;
-    private boolean tarjetaCredito;
-    private boolean tarjetaDebito;
+    private String nombre;
 
     public static PlainMedioPagoDto from(MedioPago medioPago){
         PlainMedioPagoDto plainMedioPagoDto = new PlainMedioPagoDto();
         plainMedioPagoDto.setId(medioPago.getId());
-        plainMedioPagoDto.setPse(medioPago.isPse());
-        plainMedioPagoDto.setTarjetaCredito(medioPago.isTarjetaCredito());
-        plainMedioPagoDto.setTarjetaDebito(medioPago.isTarjetaDebito());
+        plainMedioPagoDto.setNombre(medioPago.getNombre());
         return plainMedioPagoDto;
     }
 }

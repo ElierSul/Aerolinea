@@ -27,8 +27,9 @@ public class MedioPagoController {
         this.medioPagoService = medioPagoService;
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo medio de pago de tipo PSE, tarjeta de credito" +
-            " o tarjeta debito.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo medio de pago." +
+            " En este endpoint los usuarios deben los siguientes campos: nombre. En este atributo se puede guardar cualquier tipo de medio de pago que se " +
+            "desee, bien sea PSE, Tarjeta de credito, Tarjeta debito, etc.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
                     "se creo un nuevo medio de pago.",
@@ -57,7 +58,7 @@ public class MedioPagoController {
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
-                    "posible recuperar la lista de aerolineas",
+                    "posible recuperar la lista de medios de pago de la base de datos.",
                     content = @Content) })
 
     @GetMapping("/listar")
@@ -67,7 +68,8 @@ public class MedioPagoController {
         return new ResponseEntity<>(medioPagoDtos, HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un medio de pago con base en su id unico.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un medio de pago con base en su id unico. El usuario debe de suministrar el id " +
+            "del medio de pago que desea buscar. En caso de no encontrar el medio de pago se lanza una excepcion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto al medio de pago consultado.",
@@ -76,7 +78,7 @@ public class MedioPagoController {
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
-                    "posible recuperar la aerolinea de la base de datos.",
+                    "posible recuperar el medio de pago de la base de datos.",
                     content = @Content) })
 
     @GetMapping(value = "{id}")
@@ -85,7 +87,8 @@ public class MedioPagoController {
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un medio de pago de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un medio de pago de la base de datos. El usuario debe de suministrar el id " +
+            "del medio de pago que desea eliminar de la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino el " +
                     "medio de pago con el id especificado de la base de datos.",
@@ -103,7 +106,8 @@ public class MedioPagoController {
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un medio de pago especifico de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un medio de pago especifico de la base de datos. El usuario debe de suministrar " +
+            "el id del medio de pago que desea editar, y respectivamente en el JSON debe de suministrar el nombre del medio de pago.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
                     "el medio de pago con el id especificado.",
@@ -122,7 +126,8 @@ public class MedioPagoController {
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un medio de pago a un boleto.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un medio de pago a un boleto. El usuario debe de suministrar el id del " +
+            "medio de pago y del boleto respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se asocio el medio de pago " +
                     " con el boleto deseado.",
@@ -141,7 +146,8 @@ public class MedioPagoController {
         return new ResponseEntity<>(MedioPagoDto.from(medioPago), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un medio de pago y un boleto.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un medio de pago y un boleto. El usuario debe de suministrar " +
+            "el id del medio de pago y el id del boleto respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre " +
                     "el medio de pago y el boleto.",

@@ -6,14 +6,12 @@ import lombok.Data;
 @Data
 public class PlainTipoVueloDto {
     private Long id;
-    private boolean privado;
-    private boolean publico;
+    private String nombre;
 
     public static PlainTipoVueloDto from(TipoVuelo tipoVuelo){
         PlainTipoVueloDto plainTipoVueloDto = new PlainTipoVueloDto();
         plainTipoVueloDto.setId(tipoVuelo.getId());
-        plainTipoVueloDto.setPrivado(tipoVuelo.isPrivado());
-        plainTipoVueloDto.setPublico(tipoVuelo.isPublico());
+        plainTipoVueloDto.setNombre(tipoVuelo.getNombre());
         return plainTipoVueloDto;
     }
 }

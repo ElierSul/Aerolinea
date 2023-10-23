@@ -28,7 +28,9 @@ public class TipoVueloController {
         this.tipoVueloService = tipoVueloService;
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo tipo de vuelo, bien sea publico o privado.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios crear un nuevo tipo de vuelo. En este endpoint los usuarios deben suminstrar " +
+            "un nombre en el JSON, se recomienda que sea de tipo publico o privado. Los demas datos no es necesario diligenciarlos, " +
+            "estos se generan de forma automatica al realizar las respectivas asociaciones.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: Secompleto la solicitud con exito, por tanto, " +
                     "se creo un nuevo tipo de vuelo.",
@@ -48,7 +50,7 @@ public class TipoVueloController {
     }
 
     @Operation(summary = "Este Endpoint, permite a los usuarios consultar todos los tipos de vuelo que se encuentran " +
-            "registrados en la base de datos")
+            "registrados en la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto a la lista de tipos de vuelo.",
@@ -67,7 +69,8 @@ public class TipoVueloController {
         return new ResponseEntity<>(tiposVueloDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un tipo de vuelo con base en su id unico.")
+    @Operation(summary = "Este Endpoint, permite a los usuarios buscar un tipo de vuelo con base en su id unico. El usuario debe de suministrar el id " +
+            "del tipo de vuelo que desea buscar. En caso de no encontrar el tipo de vuelo se genera una excepcion.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito y se devuelve la información solicitada, " +
                     "respecto al tipo de vuelo consultado.",
@@ -76,7 +79,7 @@ public class TipoVueloController {
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Not Found: El recurso no ha sido encontrado en el servidor. Es decir, que no fue " +
-                    "posible recuperar la aerolinea de la base de datos.",
+                    "posible recuperar el tipo de vuelo de la base de datos.",
                     content = @Content) })
 
     @GetMapping(value = "{id}")
@@ -85,7 +88,8 @@ public class TipoVueloController {
         return new ResponseEntity<>(TipoVueloDto.from(tipoVuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un tipo de vuelo de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios eliminar un tipo de vuelo de la base de datos. El usuario debe de suministrar el id " +
+            "del tipo de vuelo que desea eliminar de la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino el " +
                     "tipo de vuelo con el id especificado de la base de datos.",
@@ -103,7 +107,8 @@ public class TipoVueloController {
         return new ResponseEntity<>(TipoVueloDto.from(tipoVuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un tipo de vuelo especifico de la base de datos.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios editar un tipo de vuelo especifico de la base de datos. El usuario debe de suministrar " +
+            "el id del tipo de vuelo que desea editar. Adicionalmente en el JSON debe diligenciar el dato del atributo nombre.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se edito de forma satisfactoria " +
                     "el tipo de vuelo con el id especificado.",
@@ -122,10 +127,11 @@ public class TipoVueloController {
         return new ResponseEntity<>(TipoVueloDto.from(tipoVuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un tipo de vuelo a un vuelo.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios asignar un tipo de vuelo a un vuelo. El usuario debe de suministrar el id del tipo de " +
+            "vuelo y el id del vuelo respectivos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se asocio el tipo de vuelo " +
-                    " con el vuelo deseado.",
+                    "con el vuelo deseado.",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = TipoVueloDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad Request: La solicitud es incorrecta o mal formada.",
@@ -141,7 +147,8 @@ public class TipoVueloController {
         return new ResponseEntity<>(TipoVueloDto.from(tipoVuelo), HttpStatus.OK);
     }
 
-    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un tipo de vuelo y un vuelo.")
+    @Operation(summary = "Este Endpoint, le permite a los usuarios remover una asociacion entre un tipo de vuelo y un vuelo. El usuario debe de " +
+            "suministrar el id del tipo de vuelo y el id del vuelo respectivamente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK: La solicitud se completo con exito. Se elimino la asociacion entre " +
                     "el tipo de vuelo y el vuelo.",

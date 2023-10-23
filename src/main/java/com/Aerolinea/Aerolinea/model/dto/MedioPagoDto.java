@@ -11,17 +11,13 @@ import java.util.stream.Collectors;
 public class MedioPagoDto {
 
     private Long id;
-    private boolean pse;
-    private boolean tarjetaCredito;
-    private boolean tarjetaDebito;
+    private String nombre;
     private List<BoletoDto> boletosDto = new ArrayList<>();
 
     public static MedioPagoDto from(MedioPago medioPago){
         MedioPagoDto medioPagoDto = new MedioPagoDto();
         medioPagoDto.setId(medioPago.getId());
-        medioPagoDto.setPse(medioPago.isPse());
-        medioPagoDto.setTarjetaCredito(medioPago.isTarjetaCredito());
-        medioPagoDto.setTarjetaDebito(medioPago.isTarjetaDebito());
+        medioPagoDto.setNombre(medioPago.getNombre());
         medioPagoDto.setBoletosDto(medioPago.getBoletos().stream().map(BoletoDto::from).collect(Collectors.toList()));
         return medioPagoDto;
     }
