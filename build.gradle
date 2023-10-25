@@ -7,8 +7,13 @@ plugins {
 group = 'com.Aerolinea'
 version = '0.0.1-SNAPSHOT'
 
+
+
 java {
 	sourceCompatibility = '17'
+}
+springBoot {
+	mainClass='com/Aerolinea/Aerolinea/AerolineaApplication.java'
 }
 
 configurations {
