@@ -7,6 +7,9 @@ plugins {
 group = 'com.Aerolinea'
 version = '0.0.1-SNAPSHOT'
 
+tasks.jar{
+	enabled=false
+}
 
 
 java {
