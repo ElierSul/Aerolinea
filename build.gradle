@@ -16,7 +16,7 @@ java {
 	sourceCompatibility = '17'
 }
 springBoot {
-	mainClass='com/Aerolinea/Aerolinea/AerolineaApplication.java'
+	mainClass='com.Aerolinea.Aerolinea.AerolineaApplication'
 }
 
 configurations {
