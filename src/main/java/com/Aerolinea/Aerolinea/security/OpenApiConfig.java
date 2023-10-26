@@ -12,13 +12,6 @@ import java.util.Arrays;
 
 @Configuration
 public class OpenApiConfig {
-
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .addServersItem(new Server().url("https://profuse-trip-production.up.railway.app/"));
-    }
-
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
