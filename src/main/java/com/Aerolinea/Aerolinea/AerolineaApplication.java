@@ -15,6 +15,15 @@ public class AerolineaApplication {
 
 	}
 
+	@Bean
+	public WebMvcConfigurer webMvcConfigurer(){
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
+			}
+		};
 	}
+}
 
 
