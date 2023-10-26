@@ -15,7 +15,7 @@ public class CorsConfig {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:3000",
-                "https://profuse-trip-production.up.railway.app/swagger-ui/index.html"));
+                "https://profuse-trip-production.up.railway.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
