@@ -7,11 +7,21 @@ import io.swagger.v3.oas.models.security.*;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.server.ServerWebExchange;
 
 import java.util.Arrays;
 
 @Configuration
 public class OpenApiConfig {
+
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .addServersItem(new Server().url("https://profuse-trip-production.up.railway.app/swagger-ui/index.html"));
+    }
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
